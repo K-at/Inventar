@@ -1,0 +1,134 @@
+@page
+@model Inventar.Pages.Übersicht.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Gerät</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data" runat="server">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Gerät.PCName" class="control-label"></label>
+            <input asp-for="Gerät.PCName" class="form-control" />
+            <span asp-validation-for="Gerät.PCName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Gerät.Mitarbeiter" class="control-label"></label>
+            <input asp-for="Gerät.Mitarbeiter" class="form-control" />
+            <span asp-validation-for="Gerät.Mitarbeiter" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Gerät.Abteilung" class="control-label"></label>
+            <input asp-for="Gerät.Abteilung" class="form-control" />
+            <span asp-validation-for="Gerät.Abteilung" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Gerät.Standort" class="control-label"></label>
+            <input asp-for="Gerät.Standort" class="form-control" />
+            <span asp-validation-for="Gerät.Standort" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Gerät.Seriennummer" class="control-label"></label>
+            <input asp-for="Gerät.Seriennummer" class="form-control" />
+            <span asp-validation-for="Gerät.Seriennummer" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Gerät.Modell" class="control-label"></label>
+            <input asp-for="Gerät.Modell" class="form-control" />
+            <span asp-validation-for="Gerät.Modell" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Gerät.Einkaufsdatum" class="control-label"></label>
+            <input asp-for="Gerät.Einkaufsdatum" class="form-control" />
+            <span asp-validation-for="Gerät.Einkaufsdatum" class="text-danger"></span>
+        </div>
+
+        //upload durch User funktioniert nicht. Formular wird geladen, alles andere ist in der Datenbank. Es gibt keine Fehlermeldung. Hab schon verschiedene Versuche gamcht. dass ist der aktuellste.
+        <dl>
+            <dt>
+                <label for="FileUpload_FormFile">File</label>
+            </dt>
+            <dd>
+                <input id="FileUpload_FormFile" type="file"
+                       name="FileUpload.FormFile" />
+            </dd>
+        </dl>
+
+        <script language="C#" runat="server">
+            void btnUploadTheFile_Click(object Source, EventArgs evArgs)
+            {
+                string strFileNameOnServer = txtServername.Value;
+                string strBaseLocation = "C:\Users\Rupprecht\Desktop\Inventar\wwwroot\Documentsocuments";
+
+                if ("" == strFileNameOnServer) {
+                    txtOutput.InnerHtml = "Fehler - es muß ein Dateiname angegeben werden.";
+                    return;
+                }
+
+                if (null != uplTheFile.PostedFile) {
+                    try {
+                        uplTheFile.PostedFile.SaveAs(strBaseLocation + strFileNameOnServer);
+                        txtOutput.InnerHtml = "Datei erfolgreich nach <b>" +
+                            strBaseLocation + strFileNameOnServer + "</b> upgeloadet";
+                    }
+                    catch (Exception e)
+                    {
+                        txtOutput.InnerHtml = "Fehler beim Speichern von <b>" +
+                            strBaseLocation + strFileNameOnServer + "</b><br>" + e.ToString();
+                    }
+                }
+            }
+        </script>
+        <table>
+            <tr>
+                <td>Datei ausw&auml;hlen:</td>
+                <td><input id="uplTheFile" type=file runat="server"></td>
+            </tr>
+            <tr>
+                <td>Name am Server:</td>
+                <td><input id="txtServername" type="text" runat="server"></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type=button id="btnUploadTheFile" value="Speichern"
+                           OnServerClick="btnUploadTheFile_Click" runat="server">
+                </td>
+            </tr>
+
+        </table>
+
+        @*<input id="fileupload" type="file" name="files[]">
+            <p id="filename"></p>
+            <p id="upload-status"></p>
+            <div id="progress">
+                <div class="bar"></div>
+            </div>*@
+
+
+
+
+
+        <div style="margin-top:15px">
+            <output name="result"></output>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
